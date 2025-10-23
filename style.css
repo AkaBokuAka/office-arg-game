@@ -1,0 +1,65 @@
+/* ===== 全站風格：企業內網簡潔風 ===== */
+body {
+  font-family: "Noto Sans TC", sans-serif;
+  margin: 0;
+  background-color: #f4f6f8;
+  color: #333;
+}
+
+header {
+  background-color: #1b3a57;
+  color: white;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+header input[type="text"] {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: none;
+  width: 200px;
+}
+
+main {
+  padding: 20px;
+}
+
+a.button, button {
+  background-color: #1b3a57;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 0.95em;
+}
+
+a.button:hover, button:hover {
+  background-color: #274d74;
+}
+
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+}
+
+textarea {
+  width: 100%;
+  height: 100px;
+}
+
+/* 手機友善排版 */
+@media (max-width: 600px) {
+  main {
+    padding: 10px;
+  }
+  header input[type="text"] {
+    width: 120px;
+  }
+}

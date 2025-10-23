@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>通訊軟體 - 文件審核部群組</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+  <style>
+    .chat-window {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+    }
+    .msg {
+      margin: 8px 0;
+    }
+    .from {
+      font-weight: bold;
+    }
+    .player-options button {
+      margin: 5px;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div>💬 通訊軟體</div>
+  <form onsubmit="handleSearch(event)">
+    <input id="searchInput" type="text" placeholder="輸入關鍵詞跳轉...">
+  </form>
+</header>
+
+<main>
+  <div class="chat-window">
+    <div class="msg"><span class="from">🧑‍💼 林組長：</span> 今天是你的第一天，上手一下工作系統吧。</div>
+    <div class="msg"><span class="from">🧑‍💼 林組長：</span> 我們每天要核對三份文件，只要找到錯誤地方就提交修改。</div>
+    <div class="msg"><span class="from">🧍‍♀️ 小周：</span> 如果有查不到的東西，可以用公司論壇搜關鍵詞喔～（笑）</div>
+
+    <div class="player-options">
+      <button onclick="window.location.href='work.html'">開始工作</button>
+      <button onclick="window.location.href='forum.html'">打開論壇</button>
+    </div>
+  </div>
+</main>
+</body>
+</html>

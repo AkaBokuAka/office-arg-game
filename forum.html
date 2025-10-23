@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>員工論壇 - 文件審核部</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+  <style>
+    .post {
+      background: white;
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 15px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    }
+    .reply {
+      background: #f9f9f9;
+      border-left: 3px solid #ccc;
+      margin-top: 8px;
+      padding-left: 10px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div>🖥️ 公司論壇</div>
+  <form onsubmit="handleSearch(event)">
+    <input id="searchInput" type="text" placeholder="輸入關鍵詞跳轉...">
+  </form>
+</header>
+
+<main>
+  <div class="post">
+    <strong>【置頂】歡迎新員工！</strong>
+    <p>有問題可以直接在此板搜尋關鍵詞，例如「工作」、「入職」、「通訊」。</p>
+  </div>
+
+  <div class="post" onclick="toggleReply(this)">
+    <strong>帖子：《摩斯密碼解法》</strong>
+    <div class="reply">
+      <p>線索：.--.--.- → 試著把它轉成文字，輸入搜尋框看看？</p>
+    </div>
+  </div>
+
+  <div class="post" onclick="toggleReply(this)">
+    <strong>帖子：《伺服室事件》</strong>
+    <div class="reply">
+      <p>「我被困在伺服室，快查伺服表！」（提示：輸入 <b>REBOOT</b>）</p>
+    </div>
+  </div>
+</main>
+
+<script>
+function toggleReply(post) {
+  const reply = post.querySelector(".reply");
+  reply.style.display = reply.style.display === "block" ? "none" : "block";
+}
+</script>
+</body>
+</html>

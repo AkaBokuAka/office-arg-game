@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>工作系統 - 文件審核介面</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+  <style>
+    .workspace {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .doc {
+      flex: 1;
+      background: white;
+      padding: 15px;
+      border-radius: 12px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+      min-width: 250px;
+    }
+    .doc p:hover {
+      background: #eef;
+      cursor: pointer;
+    }
+    .clicked {
+      color: red;
+      text-decoration: line-through;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div>📑 工作系統</div>
+  <form onsubmit="handleSearch(event)">
+    <input id="searchInput" type="text" placeholder="輸入關鍵詞跳轉...">
+  </form>
+</header>
+
+<main>
+  <div class="workspace">
+    <div class="doc" id="docA">
+      <h3>文件A：人事登錄表</h3>
+      <p onclick="toggleMark(this)">姓名：王曉明</p>
+      <p onclick="toggleMark(this)">出生日期：1998/14/25</p>
+      <p onclick="toggleMark(this)">員工編號：90423</p>
+      <p onclick="toggleMark(this)">部門：檔案審核課</p>
+    </div>
+
+    <div class="doc" id="docB">
+      <h3>文件B：系統登錄紀錄</h3>
+      <p onclick="toggleMark(this)">使用者：WangXiaoming</p>
+      <p onclick="toggleMark(this)">登入日期：1998/12/25</p>
+      <p onclick="toggleMark(this)">員工ID：90423</p>
+      <p onclick="toggleMark(this)">部門代碼：A-02</p>
+    </div>
+  </div>
+
+  <br>
+  <button onclick="submitWork()">提交審核</button>
+</main>
+
+<script>
+function toggleMark(el) {
+  el.classList.toggle('clicked');
+}
+
+function submitWork() {
+  alert("✅ 工作提交完成。\n今日表現良好，請記下密碼：DAY2BEGIN");
+  window.location.href = "forum.html";
+}
+</script>
+</body>
+</html>
