@@ -2,36 +2,77 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
-  <title>工作系統 - 文件審核介面</title>
+  <title>文件審核系統 - 工作介面</title>
   <link rel="stylesheet" href="style.css">
   <script src="script.js" defer></script>
   <style>
+    body {
+      background-color: #eef1f5;
+    }
+
     .workspace {
       display: flex;
       gap: 20px;
       flex-wrap: wrap;
+      justify-content: space-between;
     }
-    .doc {
-      flex: 1;
+
+    .panel {
       background: white;
-      padding: 15px;
       border-radius: 12px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-      min-width: 250px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 20px;
+      flex: 1;
+      min-width: 300px;
     }
-    .doc p:hover {
-      background: #eef;
+
+    .panel h3 {
+      margin-top: 0;
+      border-bottom: 2px solid #ddd;
+      padding-bottom: 5px;
+    }
+
+    .doc-line {
+      padding: 4px 6px;
+      margin: 2px 0;
+      border-radius: 6px;
+      transition: 0.2s;
+    }
+
+    .doc-line:hover {
+      background: #f0f4ff;
       cursor: pointer;
     }
-    .clicked {
-      color: red;
+
+    .marked {
+      background: #ffecec;
+      color: #c00;
       text-decoration: line-through;
+    }
+
+    select {
+      padding: 6px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    #submitBtn {
+      display: block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      border-radius: 8px;
+    }
+
+    @media (max-width: 700px) {
+      .workspace {
+        flex-direction: column;
+      }
     }
   </style>
 </head>
 <body>
 <header>
-  <div>📑 工作系統</div>
+  <div>📑 文件審核系統</div>
   <form onsubmit="handleSearch(event)">
     <input id="searchInput" type="text" placeholder="輸入關鍵詞跳轉...">
   </form>
@@ -39,36 +80,81 @@
 
 <main>
   <div class="workspace">
-    <div class="doc" id="docA">
-      <h3>文件A：人事登錄表</h3>
-      <p onclick="toggleMark(this)">姓名：王曉明</p>
-      <p onclick="toggleMark(this)">出生日期：1998/14/25</p>
-      <p onclick="toggleMark(this)">員工編號：90423</p>
-      <p onclick="toggleMark(this)">部門：檔案審核課</p>
+    <!-- 左側文件A -->
+    <div class="panel">
+      <h3>文件 A：原始登錄表</h3>
+      <div id="docA">
+        <p class="doc-line" onclick="toggleMark(this)">姓名：王曉明</p>
+        <p class="doc-line" onclick="toggleMark(this)">出生日期：1998/14/25</p>
+        <p class="doc-line" onclick="toggleMark(this)">員工編號：90423</p>
+        <p class="doc-line" onclick="toggleMark(this)">部門：檔案審核課</p>
+      </div>
     </div>
 
-    <div class="doc" id="docB">
-      <h3>文件B：系統登錄紀錄</h3>
-      <p onclick="toggleMark(this)">使用者：WangXiaoming</p>
-      <p onclick="toggleMark(this)">登入日期：1998/12/25</p>
-      <p onclick="toggleMark(this)">員工ID：90423</p>
-      <p onclick="toggleMark(this)">部門代碼：A-02</p>
+    <!-- 右側切換文件 -->
+    <div class="panel">
+      <h3>文件 B：比較對照表</h3>
+      <label for="fileSelect">選擇文件版本：</label>
+      <select id="fileSelect" onchange="switchDoc(this.value)">
+        <option value="ver1">版本 1（系統登錄紀錄）</option>
+        <option value="ver2">版本 2（人事副本）</option>
+        <option value="ver3">版本 3（外部報表）</option>
+      </select>
+
+      <div id="docB" style="margin-top: 10px;">
+        <!-- 文件內容會由JS切換 -->
+      </div>
     </div>
   </div>
 
-  <br>
-  <button onclick="submitWork()">提交審核</button>
+  <button id="submitBtn" onclick="submitWork()">提交審核</button>
 </main>
 
 <script>
-function toggleMark(el) {
-  el.classList.toggle('clicked');
-}
+  const versions = {
+    ver1: [
+      "使用者：WangXiaoming",
+      "登入日期：1998/12/25",
+      "員工ID：90423",
+      "部門代碼：A-02"
+    ],
+    ver2: [
+      "姓名：王小明",
+      "出生日期：1998/12/25",
+      "員工編號：90423",
+      "部門：文件核對部"
+    ],
+    ver3: [
+      "姓名：WANG X.M.",
+      "生日：1998/12/25",
+      "員工代碼：90423",
+      "分組：審核課"
+    ]
+  };
 
-function submitWork() {
-  alert("✅ 工作提交完成。\n今日表現良好，請記下密碼：DAY2BEGIN");
-  window.location.href = "forum.html";
-}
+  function switchDoc(version) {
+    const container = document.getElementById("docB");
+    container.innerHTML = "";
+    versions[version].forEach(line => {
+      const p = document.createElement("p");
+      p.className = "doc-line";
+      p.textContent = line;
+      p.onclick = () => toggleMark(p);
+      container.appendChild(p);
+    });
+  }
+
+  function toggleMark(el) {
+    el.classList.toggle("marked");
+  }
+
+  function submitWork() {
+    alert("✅ 文件提交成功！\n今日工作表現良好。\n請記下明日密碼：DAY2BEGIN");
+    window.location.href = "forum.html";
+  }
+
+  // 初始化顯示版本1
+  switchDoc("ver1");
 </script>
 </body>
 </html>
