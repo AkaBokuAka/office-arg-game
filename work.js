@@ -26,7 +26,6 @@
       const p = document.createElement("p");
       p.className = "doc-line";
       p.textContent = line;
-      p.onclick = () => toggleMark(p);
       container.appendChild(p);
     });
   }
