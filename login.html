@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>員工登入系統</title>
+  <link rel="stylesheet" href="style.css">
+  <script>
+    const validPasswords = {
+      1: "DAY1BEGIN",
+      2: "DAY2BEGIN",
+      3: "DAY3BEGIN",
+      4: "DAY4BEGIN",
+      5: "DAY5BEGIN"
+    };
+
+    function login() {
+      const name = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      if (!name || !password) {
+        alert("請輸入完整的登入資訊。");
+        return;
+      }
+
+      // 檢查密碼對應哪一關
+      let day = Object.keys(validPasswords).find(d => validPasswords[d] === password);
+      if (!day) {
+        alert("❌ 密碼錯誤，請確認後再試。");
+        return;
+      }
+
+      // 記錄玩家進度
+      localStorage.setItem("username", name);
+      localStorage.setItem("progress", day);
+
+      window.location.href = `work_day${day}.html`;
+    }
+  </script>
+</head>
+<body>
+  <div class="login-box">
+    <h2>🕓 員工登入系統</h2>
+    <input id="username" placeholder="登入名稱"><br>
+    <input id="password" placeholder="密碼"><br>
+    <button onclick="login()">登入上班</button>
+  </div>
+</body>
+</html>
