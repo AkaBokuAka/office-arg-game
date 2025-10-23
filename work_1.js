@@ -34,10 +34,19 @@
     el.classList.toggle("marked");
   }
 
-  function submitWork() {
-    alert("✅ 文件提交成功！\n今日工作表現良好。\n請記下明日密碼：DAY2BEGIN");
-    window.location.href = "forum.html";
-  }
+const correctLines = [1, 3]; 
+
+function submitWork() {
+  const selected = document.querySelectorAll("#docA .marked");
+  let correctCount = 0;
+  selected.forEach((el, i) => {
+    const index = Array.from(document.querySelectorAll("#docA .doc-line")).indexOf(el) + 1;
+    if (correctLines.includes(index)) correctCount++;
+  });
+
+  // 跳轉到結果頁並帶上分數
+  window.location.href = `result.html?day=1&score=${correctCount}`;
+}
 
   // 初始化顯示版本1
   switchDoc("ver1");
