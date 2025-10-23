@@ -1,20 +1,75 @@
-<!-- 右側切換文件 -->
-<div class="panel">
-  <h3>文件 B：比較對照表</h3>
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>文件審核系統 - 工作介面</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- 共用功能 -->
+  <script src="script.js" defer></script>
+  <!-- 只在本頁運行 -->
+  <script src="work.js" defer></script>
 
-  <label for="fileSelect">選擇文件版本：</label>
-  <select id="fileSelect" onchange="switchDoc(this.value)">
-    <option value="ver1">版本 1（系統登錄紀錄）</option>
-    <option value="ver2">版本 2（人事副本）</option>
-    <option value="ver3">版本 3（外部報表）</option>
-  </select>
+  <style>
+    body { background-color: #eef1f5; }
+    .workspace { display: flex; gap: 20px; flex-wrap: wrap; justify-content: space-between; }
+    .panel { background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); padding: 20px; flex: 1; min-width: 300px; }
+    .panel h3 { margin-top: 0; border-bottom: 2px solid #ddd; padding-bottom: 5px; }
+    .doc-line { padding: 4px 6px; margin: 2px 0; border-radius: 6px; transition: 0.2s; }
+    .doc-line:hover { background: #f0f4ff; cursor: pointer; }
+    .marked { background: #ffecec; color: #c00; text-decoration: line-through; }
+    select { padding: 6px; border-radius: 6px; border: 1px solid #ccc; }
+    #submitBtn { display: block; margin: 20px auto; padding: 10px 20px; border-radius: 8px; }
+    @media (max-width: 700px) { .workspace { flex-direction: column; } }
+  </style>
+</head>
 
-  <!-- ✅ 新增按鈕 -->
-  <button id="switchToB" onclick="goToFileB()" style="margin-top:10px;">
-    🔄 一鍵切換至 文件 B（版本 2）
-  </button>
+<body>
+<header>
+  <div>📑 文件審核系統</div>
+  <form onsubmit="handleSearch(event)">
+    <input id="searchInput" type="text" placeholder="輸入關鍵詞跳轉...">
+  </form>
+</header>
 
-  <div id="docB" style="margin-top: 10px;">
-    <!-- 文件內容由 JS 動態載入 -->
+<main>
+  <div class="workspace">
+    <!-- 左側文件A -->
+    <div class="panel">
+      <h3>文件 A：原始登錄表</h3>
+      <div id="docA">
+        <p class="doc-line" onclick="toggleMark(this)">姓名：王曉明</p>
+        <p class="doc-line" onclick="toggleMark(this)">出生日期：1998/14/25</p>
+        <p class="doc-line" onclick="toggleMark(this)">員工編號：90423</p>
+        <p class="doc-line" onclick="toggleMark(this)">部門：檔案審核課</p>
+      </div>
+    </div>
+
+    <!-- 右側文件B -->
+    <div class="panel">
+      <h3>文件 B：比較對照表</h3>
+
+      <!-- ✅ 新增快速切換選單 -->
+      <label for="quickSwitch">快速切換文件版本：</label>
+      <select id="quickSwitch" style="margin-bottom:10px;">
+        <option value="">-- 選擇版本 --</option>
+        <option value="ver1">版本 1（系統登錄紀錄）</option>
+        <option value="ver2">版本 2（人事副本）</option>
+        <option value="ver3">版本 3（外部報表）</option>
+      </select>
+
+      <!-- 原本的選擇版本 -->
+      <label for="fileSelect">選擇文件版本（同步切換）：</label>
+      <select id="fileSelect" onchange="switchDoc(this.value)">
+        <option value="ver1">版本 1（系統登錄紀錄）</option>
+        <option value="ver2">版本 2（人事副本）</option>
+        <option value="ver3">版本 3（外部報表）</option>
+      </select>
+
+      <div id="docB" style="margin-top: 10px;"></div>
+    </div>
   </div>
-</div>
+
+  <button id="submitBtn" onclick="submitWork()">提交審核</button>
+</main>
+</body>
+</html>
