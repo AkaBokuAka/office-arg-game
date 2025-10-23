@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>工作評分結果</title>
+  <link rel="stylesheet" href="style.css">
+  <script>
+    const feedback = {
+      0: "❌ 今日工作狀況不佳，請明日再接再厲。",
+      1: "⚠️ 基本合格，但仍有檢查疏漏。",
+      2: "✅ 工作表現良好！",
+      3: "🌟 完美！你是審核部的傳奇！"
+    };
+
+    const nextPasswords = {
+      1: "DAY2BEGIN",
+      2: "DAY3BEGIN",
+      3: "DAY4BEGIN",
+      4: "DAY5BEGIN",
+      5: "FINISH"
+    };
+
+    window.onload = () => {
+      const params = new URLSearchParams(window.location.search);
+      const day = parseInt(params.get("day"));
+      const score = parseInt(params.get("score"));
+
+      const resultBox = document.getElementById("result");
+      const comment = feedback[score] || feedback[0];
+      const nextCode = nextPasswords[day] || "END";
+
+      resultBox.innerHTML = `
+        <h2>📋 第 ${day} 日 工作評分</h2>
+        <p>${comment}</p>
+        <p>🔑 今日密碼：<b>${nextCode}</b></p>
+      `;
+
+      // 更新進度
+      localStorage.setItem("progress", day + 1);
+    };
+  </script>
+</head>
+<body>
+  <div id="result" class="panel" style="margin: 50px auto; max-width: 600px;"></div>
+  <div style="text-align:center;">
+    <button onclick="window.location.href='login.html'">返回登入</button>
+  </div>
+</body>
+</html>
