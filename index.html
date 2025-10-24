@@ -3,30 +3,70 @@
 <head>
   <meta charset="UTF-8">
   <title>入職通知信 - 文件審核部</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="style.css">
   <script src="script.js" defer></script>
 </head>
-<body>
-<header>
-  <div>📧 公司郵件系統</div>
-  <form onsubmit="handleSearch(event)">
-    <input id="searchInput" type="text" placeholder="輸入關鍵詞跳轉...">
+<body class="page-mail">
+<header class="mail-header">
+  <div class="brand">
+    📧 公司郵件系統
+  </div>
+  <form class="mail-search" onsubmit="handleSearch(event)" role="search">
+    <input id="searchInput" type="search" placeholder="搜尋郵件或跳轉關鍵詞…">
   </form>
 </header>
 
-<main>
-  <div class="card">
-    <h2>《歡迎加入【檔案審核部】— 入職通知》</h2>
-    <p><strong>寄件人：</strong> HR系統自動郵件</p>
-    <p><strong>收件人：</strong> 新進員工 #90423</p>
-    <hr>
-    <p>員工編號：#90423<br>
-       部門：檔案審核課<br>
-       上班時間：9:00 – 18:00（記得打卡）<br>
-       今日工作已配置至系統：
-       <a href="chat.html" class="button">進入工作介面</a>
-    </p>
-  </div>
+<main class="mail-layout">
+  <!-- 左側：郵件列表（可用作導航/說明目錄） -->
+  <aside class="mail-list" aria-label="郵件列表">
+    <button class="compose-btn" type="button">撰寫</button>
+    <nav class="folders">
+      <a class="folder active" href="#">收件匣</a>
+      <a class="folder" href="#">已加星號</a>
+      <a class="folder" href="#">寄件備份</a>
+      <a class="folder" href="#">垃圾桶</a>
+    </nav>
+
+    <div class="threads" role="list">
+      <!-- 你可以把這裡換成你的章節/規則目錄 -->
+      <a class="thread active" href="#">
+        <div class="thread-title">入職通知信</div>
+        <div class="thread-meta">HR系統 · 今日</div>
+        <div class="thread-preview">歡迎加入檔案審核部，今日工作已配置…</div>
+      </a>
+      <a class="thread" href="chat.html">
+        <div class="thread-title">工作介面</div>
+        <div class="thread-meta">系統 · 今日</div>
+        <div class="thread-preview">點此進入工作聊天介面與規則核對…</div>
+      </a>
+      <a class="thread" href="#">
+        <div class="thread-title">部門規則總覽</div>
+        <div class="thread-meta">文件 · 昨日</div>
+        <div class="thread-preview">著裝、保密與資料存放規範…</div>
+      </a>
+    </div>
+  </aside>
+
+  <!-- 右側：閱讀窗 -->
+  <section class="mail-reader">
+    <header class="reader-head">
+      <div class="subject">《歡迎加入【檔案審核部】— 入職通知》</div>
+      <div class="meta">
+        <span>寄件人：HR系統自動郵件</span>
+        <span>收件人：新進員工 #90423</span>
+      </div>
+    </header>
+
+    <article class="reader-body card">
+      <p>員工編號：#90423<br>
+         部門：檔案審核課<br>
+         上班時間：9:00 – 18:00（記得打卡）<br>
+         今日工作已配置至系統：
+         <a href="chat.html" class="button">進入工作介面</a>
+      </p>
+    </article>
+  </section>
 </main>
 </body>
 </html>
