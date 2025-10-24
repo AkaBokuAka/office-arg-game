@@ -1,72 +1,234 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <title>入職通知信 - 文件審核部</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="style.css">
-  <script src="script.js" defer></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>企业内部邮件系统</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  
+  <!-- 配置Tailwind主题 -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#165DFF',
+            secondary: '#6B7280',
+            neutral: '#F3F4F6',
+            'neutral-dark': '#E5E7EB',
+            success: '#10B981',
+            warning: '#F59E0B',
+            danger: '#EF4444',
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      }
+    }
+  </script>
+  
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .content-auto {
+        content-visibility: auto;
+      }
+      .mail-shadow {
+        box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+      }
+      .sidebar-item {
+        @apply flex items-center gap-3 px-4 py-3 hover:bg-neutral transition-colors duration-200 cursor-pointer;
+      }
+      .sidebar-item.active {
+        @apply bg-primary/10 text-primary font-medium border-l-4 border-primary;
+      }
+    }
+  </style>
 </head>
-<body class="page-mail">
-<header class="mail-header">
-  <div class="brand">
-    📧 公司郵件系統
-  </div>
-  <form class="mail-search" onsubmit="handleSearch(event)" role="search">
-    <input id="searchInput" type="search" placeholder="搜尋郵件或跳轉關鍵詞…">
-  </form>
-</header>
-
-<main class="mail-layout">
-  <!-- 左側：郵件列表（可用作導航/說明目錄） -->
-  <aside class="mail-list" aria-label="郵件列表">
-    <button class="compose-btn" type="button">撰寫</button>
-    <nav class="folders">
-      <a class="folder active" href="#">收件匣</a>
-      <a class="folder" href="#">已加星號</a>
-      <a class="folder" href="#">寄件備份</a>
-      <a class="folder" href="#">垃圾桶</a>
-    </nav>
-
-    <div class="threads" role="list">
-      <!-- 你可以把這裡換成你的章節/規則目錄 -->
-      <a class="thread active" href="#">
-        <div class="thread-title">入職通知信</div>
-        <div class="thread-meta">HR系統 · 今日</div>
-        <div class="thread-preview">歡迎加入檔案審核部，今日工作已配置…</div>
-      </a>
-      <a class="thread" href="chat.html">
-        <div class="thread-title">工作介面</div>
-        <div class="thread-meta">系統 · 今日</div>
-        <div class="thread-preview">點此進入工作聊天介面與規則核對…</div>
-      </a>
-      <a class="thread" href="#">
-        <div class="thread-title">部門規則總覽</div>
-        <div class="thread-meta">文件 · 昨日</div>
-        <div class="thread-preview">著裝、保密與資料存放規範…</div>
-      </a>
-    </div>
-  </aside>
-
-  <!-- 右側：閱讀窗 -->
-  <section class="mail-reader">
-    <header class="reader-head">
-      <div class="subject">《歡迎加入【檔案審核部】— 入職通知》</div>
-      <div class="meta">
-        <span>寄件人：HR系統自動郵件</span>
-        <span>收件人：新進員工 #90423</span>
+<body class="bg-gray-50 font-sans text-gray-800 min-h-screen">
+  <!-- 顶部导航栏 -->
+  <header class="bg-white border-b border-gray-200 sticky top-0 z-10">
+    <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+      <!-- 公司标志 -->
+      <div class="flex items-center gap-3">
+        <div class="text-primary text-2xl">
+          <i class="fa fa-building-o"></i>
+        </div>
+        <h1 class="text-lg font-semibold">环球科技企业系统</h1>
       </div>
-    </header>
+      
+      <!-- 搜索框 -->
+      <div class="flex-1 max-w-xl mx-8">
+        <form onsubmit="handleSearch(event)" class="relative">
+          <input id="searchInput" type="text" placeholder="输入关键词跳转到公司网站或数据库..." 
+                 class="w-full px-4 py-2 pl-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all">
+          <i class="fa fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+        </form>
+      </div>
+      
+      <!-- 用户信息 -->
+      <div class="flex items-center gap-4">
+        <button class="text-gray-500 hover:text-primary transition-colors">
+          <i class="fa fa-bell-o text-xl"></i>
+        </button>
+        <div class="flex items-center gap-2">
+          <img src="https://picsum.photos/id/1005/40/40" alt="用户头像" class="w-8 h-8 rounded-full object-cover border border-gray-200">
+          <span class="text-sm font-medium">员工ID: 8762</span>
+        </div>
+      </div>
+    </div>
+  </header>
 
-    <article class="reader-body card">
-      <p>員工編號：#90423<br>
-         部門：檔案審核課<br>
-         上班時間：9:00 – 18:00（記得打卡）<br>
-         今日工作已配置至系統：
-         <a href="chat.html" class="button">進入工作介面</a>
-      </p>
-    </article>
-  </section>
-</main>
+  <div class="container mx-auto px-4 py-6 flex gap-6">
+    <!-- 侧边栏 -->
+    <aside class="w-64 shrink-0">
+      <div class="bg-white rounded-lg mail-shadow overflow-hidden">
+        <div class="sidebar-item">
+          <i class="fa fa-envelope-o w-5 text-center"></i>
+          <span>收件箱</span>
+          <span class="ml-auto bg-primary text-white text-xs px-2 py-1 rounded-full">12</span>
+        </div>
+        <div class="sidebar-item">
+          <i class="fa fa-paper-plane-o w-5 text-center"></i>
+          <span>已发送</span>
+        </div>
+        <div class="sidebar-item">
+          <i class="fa fa-draft w-5 text-center"></i>
+          <span>草稿</span>
+        </div>
+        <div class="sidebar-item active">
+          <i class="fa fa-star-o w-5 text-center"></i>
+          <span>重要邮件</span>
+        </div>
+        <div class="sidebar-item">
+          <i class="fa fa-trash-o w-5 text-center"></i>
+          <span>回收站</span>
+        </div>
+        
+        <div class="border-t border-gray-200 my-2"></div>
+        
+        <div class="p-4">
+          <h3 class="text-xs uppercase text-gray-500 font-semibold mb-3">部门邮件组</h3>
+          <div class="space-y-1">
+            <div class="sidebar-item py-2 text-sm">
+              <i class="fa fa-users w-5 text-center"></i>
+              <span>技术部</span>
+            </div>
+            <div class="sidebar-item py-2 text-sm">
+              <i class="fa fa-users w-5 text-center"></i>
+              <span>市场部</span>
+            </div>
+            <div class="sidebar-item py-2 text-sm">
+              <i class="fa fa-users w-5 text-center"></i>
+              <span>人力资源</span>
+            </div>
+            <div class="sidebar-item py-2 text-sm">
+              <i class="fa fa-users w-5 text-center"></i>
+              <span>管理层</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- 主内容区 - 邮件详情 -->
+    <main class="flex-1">
+      <div class="bg-white rounded-lg mail-shadow overflow-hidden">
+        <!-- 邮件标题栏 -->
+        <div class="p-6 border-b border-gray-200">
+          <h2 class="text-xl font-semibold mb-4">关于公司内部搜索系统的使用说明</h2>
+          <div class="flex flex-wrap gap-x-8 gap-y-2 text-sm text-gray-600">
+            <div class="flex items-center gap-2">
+              <span class="font-medium text-gray-800">发件人:</span>
+              <span>系统管理员</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="font-medium text-gray-800">收件人:</span>
+              <span>全体员工</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="font-medium text-gray-800">日期:</span>
+              <span>2025年10月23日 09:30</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 邮件内容 -->
+        <div class="p-6">
+          <p class="mb-4">各位同事：</p>
+          
+          <p class="mb-4">为提高工作效率，公司最新上线了内部智能搜索系统。该系统整合了公司所有网站、数据库、文档和资源，您可以通过页面顶部的搜索栏快速查找所需信息。</p>
+          
+          <p class="mb-4">使用说明：</p>
+          
+          <ul class="list-disc pl-6 mb-4 space-y-2">
+            <li>在顶部搜索框输入关键词（如项目名称、客户信息、文档编号等）</li>
+            <li>系统会自动匹配并跳转至相关资源页面</li>
+            <li>支持模糊搜索和多关键词组合查询（用空格分隔）</li>
+            <li>敏感信息需验证权限后方可访问</li>
+          </ul>
+          
+          <p class="mb-4">该系统采用了最新的AI算法，能够学习您的搜索习惯并提供更精准的结果。如有任何使用问题，请联系IT支持部门。</p>
+          
+          <p class="mb-4">注意：本系统仅限公司内部使用，严禁泄露任何通过系统获取的信息给外部人员。</p>
+          
+          <p>祝工作顺利！</p>
+          <p class="mt-2">系统管理部</p>
+        </div>
+        
+        <!-- 邮件附件 -->
+        <div class="p-6 bg-gray-50 border-t border-gray-200">
+          <h3 class="font-medium mb-3 flex items-center gap-2">
+            <i class="fa fa-paperclip text-gray-500"></i>
+            <span>附件</span>
+          </h3>
+          <div class="space-y-2">
+            <div class="flex items-center gap-3 p-2 hover:bg-white rounded transition-colors">
+              <i class="fa fa-file-pdf-o text-danger text-xl"></i>
+              <div class="flex-1">
+                <div class="font-medium text-sm">搜索系统使用手册.pdf</div>
+                <div class="text-xs text-gray-500">2.4 MB</div>
+              </div>
+              <button class="text-primary hover:text-primary/80">
+                <i class="fa fa-download"></i>
+              </button>
+            </div>
+            <div class="flex items-center gap-3 p-2 hover:bg-white rounded transition-colors">
+              <i class="fa fa-file-excel-o text-success text-xl"></i>
+              <div class="flex-1">
+                <div class="font-medium text-sm">常见问题解答.xlsx</div>
+                <div class="text-xs text-gray-500">1.1 MB</div>
+              </div>
+              <button class="text-primary hover:text-primary/80">
+                <i class="fa fa-download"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 邮件操作按钮 -->
+        <div class="p-4 border-t border-gray-200 flex gap-2">
+          <button class="flex items-center gap-1 px-3 py-1.5 bg-white border border-gray-300 rounded hover:bg-gray-50 transition-colors">
+            <i class="fa fa-reply text-sm"></i>
+            <span>回复</span>
+          </button>
+          <button class="flex items-center gap-1 px-3 py-1.5 bg-white border border-gray-300 rounded hover:bg-gray-50 transition-colors">
+            <i class="fa fa-reply-all text-sm"></i>
+            <span>回复全部</span>
+          </button>
+          <button class="flex items-center gap-1 px-3 py-1.5 bg-white border border-gray-300 rounded hover:bg-gray-50 transition-colors">
+            <i class="fa fa-forward text-sm"></i>
+            <span>转发</span>
+          </button>
+          <button class="flex items-center gap-1 px-3 py-1.5 bg-white border border-gray-300 rounded hover:bg-gray-50 transition-colors ml-auto">
+            <i class="fa fa-trash-o text-sm"></i>
+            <span>删除</span>
+          </button>
+        </div>
+      </div>
+    </main>
+  </div>
+
 </body>
 </html>
