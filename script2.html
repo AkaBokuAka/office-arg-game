@@ -1,0 +1,163 @@
+
+  <script>
+    // Keyboard shortcut: focus search with '/'
+    const searchInput = () => document.getElementById('searchInput');
+    window.addEventListener('keydown', (e)=>{
+      const tag = (e.target.tagName || '').toLowerCase();
+      if(e.key === '/' && tag !== 'input' && tag !== 'textarea'){
+        e.preventDefault();
+        searchInput().focus();
+      }
+    });
+
+
+    // Simple keyword router you can expand for your game
+    function routeByKeyword(q){
+      const normalized = q.toLowerCase();
+      const map = [
+        { keys: ['歡迎','開始','start','welcome'], id:'welcome' },
+        { keys: ['規則','rule','rules','help','幫助'], id:'rules' },
+        { keys: ['示例','範例','example','examples','例子'], id:'examples' },
+        { keys: ['進入','enter'], id:'enter-scene' },
+        { keys: ['鑰匙','key'], id:'item-key' },
+        { keys: ['船長','captain'], id:'npc-captain' },
+      ];
+      for(const m of map){
+        if(m.keys.some(k => normalized.includes(k))) return m.id;
+      }
+      return null;
+    }
+
+    // Thread/content switching
+    function openThread(id){
+      const content = document.getElementById('content');
+      const views = {
+        'welcome': `
+          <div class="meta">
+            <div class="avatar"></div>
+            <div class="who">系統</div>
+            <div class="tag">歡迎</div>
+          </div>
+          <article class="rules">
+            <h1>歡迎來到文本冒險</h1>
+            <p>在上方搜索欄輸入一個關鍵詞，立刻跳轉到對應節點。</p>
+            <ul>
+              <li>試試：進入、鑰匙、船長</li>
+              <li>或輸入「規則」查看遊戲說明</li>
+            </ul>
+          </article>
+        `,
+        'rules': document.getElementById('rulesArticle').outerHTML,
+        'examples': `
+          <div class="meta">
+            <div class="avatar"></div>
+            <div class="who">範例庫</div>
+            <div class="tag">字詞提示</div>
+          </div>
+          <article class="rules">
+            <h1>可輸入的關鍵詞示例</h1>
+            <ul>
+              <li>動作：進入實驗室、觀察大廳、使用鑰匙、對話船長</li>
+              <li>探索：打開門、檢查桌子、閱讀手札、解鎖保險箱</li>
+              <li>戰術：潛行走位、分散注意、投擲石塊</li>
+            </ul>
+            <p class="muted">你可將兩到三個詞組合，如「塔樓 觀察」「碼頭 對話 商人」。</p>
+          </article>
+        `,
+        'enter-scene': `
+          <div class="meta">
+            <div class="avatar"></div>
+            <div class="who">場景</div>
+            <div class="tag">入口</div>
+          </div>
+          <article class="rules">
+            <h1>你來到霧色的碼頭</h1>
+            <p>遠處傳來船鈴，木板濕滑。你想做什麼？</p>
+            <ul>
+              <li>觀察</li>
+              <li>對話 商人</li>
+              <li>使用 繩索</li>
+            </ul>
+          </article>
+        `,
+        'item-key': `
+          <div class="meta">
+            <div class="avatar"></div>
+            <div class="who">物品</div>
+            <div class="tag">鑰匙</div>
+          </div>
+          <article class="rules">
+            <h1>青銅鑰匙</h1>
+            <p>表面刻著塔樓的徽記。或許能開啟某扇古老的門。</p>
+          </article>
+        `,
+        'npc-captain': `
+          <div class="meta">
+            <div class="avatar"></div>
+            <div class="who">角色</div>
+            <div class="tag">船長</div>
+          </div>
+          <article class="rules">
+            <h1>與船長對話</h1>
+            <p>「風暴將至，年輕人。」他露出意味深長的笑容。</p>
+          </article>
+        `
+      };
+      content.innerHTML = views[id] || `
+        <div class="meta">
+          <div class="avatar"></div>
+          <div class="who">系統</div>
+          <div class="tag">未知節點</div>
+        </div>
+        <article class="rules">
+          <h1>尚未定義的節點</h1>
+          <p class="muted">你可以在 routeByKeyword 中加入對應映射，或在 openThread 補充視圖「${id}」。</p>
+        </article>
+      `;
+      // Visual feedback
+      flashPanel(document.querySelector('.panel-preview'));
+    }
+
+    function selectFolder(name){
+      toast('切換到：' + name);
+    }
+
+    // Small UI helpers
+    function toast(msg){
+      const tips = document.getElementById('tips');
+      tips.textContent = msg;
+      tips.style.opacity = '1';
+      clearTimeout(toast._t);
+      toast._t = setTimeout(()=> tips.style.opacity = '.0', 1600);
+    }
+    function flashPanel(panel){
+      panel.animate([
+        { boxShadow: '0 0 0 rgba(0,0,0,0)' },
+        { boxShadow: '0 12px 36px rgba(59,130,246,.35)' },
+        { boxShadow: 'var(--shadow)' }
+      ], { duration: 420, easing: 'ease-out' });
+    }
+    function pulse(el){
+      el.animate([
+        { transform:'scale(1)' },
+        { transform:'scale(1.02)' },
+        { transform:'scale(1)' }
+      ], { duration: 180, easing: 'ease-out' });
+    }
+    function shake(el){
+      el.animate([
+        { transform:'translateX(0)' },
+        { transform:'translateX(-6px)' },
+        { transform:'translateX(6px)' },
+        { transform:'translateX(0)' }
+      ], { duration: 200, easing: 'ease-in-out' });
+    }
+
+    // Persist search on reload (optional)
+    (function restore(){
+      const key = 'game.search.last';
+      const input = searchInput();
+      input.value = sessionStorage.getItem(key) || '';
+      input.addEventListener('input', () => sessionStorage.setItem(key, input.value));
+    })();
+  </script>
