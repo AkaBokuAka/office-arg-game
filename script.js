@@ -11,6 +11,7 @@ function handleSearch(event) {
     "工作": "work.html",
     "論壇": "forum.html",
     "forum": "forum.html"
+    "ID0417": "chat0417.html"
   };
 
   if (routes[keyword]) {
@@ -19,3 +20,4 @@ function handleSearch(event) {
     alert("❌ 未找到相關頁面，請嘗試其他關鍵詞。");
   }
 }
+
